@@ -1,5 +1,4 @@
 import connection from '../databases/database.js'
-import joi from 'joi';
 
 export async function getGames(req, res) {
   const name = req.query.name;

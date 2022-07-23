@@ -1,6 +1,14 @@
 import connection from '../databases/database.js';
 
 export async function getCustomers (req, res) {
+    const cpf = req.query.cpf;
+    if(cpf) {
+        const {rows: customers} = await connection.query(`
+        SELECT * FROM customers
+        WHERE customers.cpf LIKE '${cpf}%'
+        `)
+        return res.send(customers)
+    }
     const {rows: customers} = await connection.query(`
     SELECT * FROM customers
     `)
@@ -24,7 +32,7 @@ export async function insertCustomers(req, res) {
     INSERT INTO customers (name, phone, cpf, birthday) 
     VALUES ('${name}', '${phone}', '${cpf}', '${birthday}');
     `);
-    res.sendStatus(200)
+    res.sendStatus(201)
 }
 export async function updateCustomer (req, res) {
     const id = req.params.id;
