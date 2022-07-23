@@ -6,29 +6,11 @@ export async function getCategories (req, res) {
     res.send(categories);
 }
 export async function insertCategories (req, res) {
-    const newCategorie = req.body;
-
-    const categorieSchema = joi.object ({
-        name: joi.string().required()
-    });
-
-    const {error} = categorieSchema.validate(newCategorie);
-
-    if(error) {
-        return res.sendStatus(400)
-    }
-
-    const { rows: categories } = await connection.query('SELECT * FROM categories');
-
-    const anotherName = categories.find((element) => element.name === newCategorie.name);
-
-    if(anotherName) {
-        return res.sendStatus(409)
-    }
+    const {name} = req.body;
     
     await connection.query(
         `INSERT INTO categories (name) 
-          VALUES ('${newCategorie.name}')`
+          VALUES ('${name}')`
     );
 
     res.sendStatus(201);

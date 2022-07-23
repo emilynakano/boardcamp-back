@@ -1,7 +1,4 @@
 import connection from '../databases/database.js';
-import DateExtension from '@joi/date';
-import Joi from 'joi';
-const joi = Joi.extend(DateExtension)
 
 export async function getCustomers (req, res) {
     const {rows: customers} = await connection.query(`
