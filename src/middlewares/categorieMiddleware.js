@@ -9,11 +9,16 @@ export default async function categorieMiddleware (req, res, next) {
     if(error) {
         return res.sendStatus(400)
     }
-    const { rows: categories } = await connection.query('SELECT name FROM categories');
 
-    if(categories.find((categorie) => categorie.name === name)) {
-        return res.sendStatus(409)
+    try {
+        const { rows: categories } = await connection.query('SELECT name FROM categories');
+
+        if(categories.find((categorie) => categorie.name === name)) {
+            return res.sendStatus(409)
+        }
+    
+        next(); 
+    } catch {
+        res.sendStatus(500)
     }
-
-    next();
 }
